@@ -8,6 +8,8 @@ import 'package:flutterbloc/data/web_services/characters_web_services.dart';
 import 'package:flutterbloc/presentation/screens/characters_details.dart';
 import 'package:flutterbloc/presentation/screens/characters_screen.dart';
 
+import 'data/models/characters.dart';
+
 class AppRouter {
   late CharactersRepository charactersRepository;
   late CharactersCubit charactersCubit;
@@ -25,8 +27,16 @@ class AppRouter {
           ),
         );
       case charactersDetailsScreen:
+        final character = settings.arguments as Character;
+
         return MaterialPageRoute(
-          builder: (_) => const CharactersDetailsScreen(),
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) =>
+                CharactersCubit(charactersRepository),
+            child: CharactersDetailsScreen(
+              character: character,
+            ),
+          ),
         );
     }
     return null;
